@@ -1,7 +1,8 @@
 #!/bin/bash
 # Builds Paint.app next to this script (universal when the Intel toolchain is available).
 #   ./build.sh          build Paint.app
-#   ./build.sh --zip    also create Paint-macOS.zip for distribution
+#   ./build.sh --zip      also create Paint-macOS.zip for distribution
+#   ./build.sh --install  also install into /Applications (Spotlight, Launchpad)
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -40,11 +41,21 @@ iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/AppIcon.icns"
 
 codesign --force --deep --sign - "$APP" >/dev/null 2>&1 || true
 
-if [[ "${1:-}" == "--zip" ]]; then
-  rm -f Paint-macOS.zip
-  ditto -c -k --keepParent "$APP" Paint-macOS.zip
-  echo "→ Packaged Paint-macOS.zip"
-fi
+for arg in "$@"; do
+  case "$arg" in
+    --zip)
+      rm -f Paint-macOS.zip
+      ditto -c -k --keepParent "$APP" Paint-macOS.zip
+      echo "→ Packaged Paint-macOS.zip" ;;
+    --install)
+      rm -rf /Applications/Paint.app
+      ditto "$APP" /Applications/Paint.app
+      LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
+      "$LSREGISTER" -f /Applications/Paint.app || true
+      mdimport /Applications/Paint.app || true
+      echo "→ Installed /Applications/Paint.app" ;;
+  esac
+done
 
 rm -rf "$BUILD"
 echo "✓ Built $(pwd)/$APP"

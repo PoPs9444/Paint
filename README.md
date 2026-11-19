@@ -136,7 +136,8 @@ You need Xcode or just the **Command Line Tools** (`xcode-select --install`).
 git clone https://github.com/PoPs9444/Paint.git
 cd Paint
 ./build.sh          # builds Paint.app
-./build.sh --zip    # also packages Paint-macOS.zip
+./build.sh --zip      # also packages Paint-macOS.zip
+./build.sh --install  # also installs into /Applications (Spotlight & Launchpad)
 open Paint.app
 ```
 
