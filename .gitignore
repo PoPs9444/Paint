@@ -1,3 +1,10 @@
 Paint.app/
+Paint-macOS.zip
 .build/
 .DS_Store
+
+# local design exploration
+/Paint.png
+/Paint.icns
+/Planches/
+/Variantes/
