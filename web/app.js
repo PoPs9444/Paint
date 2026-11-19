@@ -144,7 +144,7 @@ const BRUSHES = [['brush', 'Brush'], ['calli1', 'Calligraphy brush 1'], ['calli2
 
 const S = {
   w: settings.w, h: settings.h, zoom: 1, layers: [], active: 0,
-  tool: 'select', prevTool: 'pencil', brushType: 'brush', shape: 'rect', fillMode: 'outline', selectMode: 'rect', transparentSel: false,
+  tool: 'brush', prevTool: 'brush', brushType: 'brush', shape: 'rect', fillMode: 'outline', selectMode: 'rect', transparentSel: false,
   L: '#000000', R: '#ffffff', opts: JSON.parse(JSON.stringify(TOOL_DEFAULTS)),
   font: { family: 'Arial', bold: false, italic: false, underline: false, opaque: false },
   dirty: false, fileName: 'Untitled', filePath: null,
