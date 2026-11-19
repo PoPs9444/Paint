@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paint</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="titlebar"><span id="title">Untitled - Paint</span></div>
+
+<div id="ribbon">
+  <div id="ribbon-inner">
+    <!-- FILE -->
+    <div class="group">
+      <div class="box cols3">
+        <button data-cmd="new" data-icon="new" title="New (⌘N)"></button>
+        <button data-cmd="open" data-icon="open" title="Open (⌘O)"></button>
+        <button data-cmd="print" data-icon="print" title="Print (⌘P)"></button>
+        <button data-cmd="save" data-icon="save" title="Save (⌘S) — ⇧⌘S: Save as"></button>
+        <button data-cmd="clear" data-icon="trash" title="Clear (delete selection or clear layer)"></button>
+      </div>
+      <div class="label">FILE</div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="group">
+      <div class="box cols1">
+        <button id="btn-undo" data-cmd="undo" data-icon="undo" title="Undo (⌘Z)"></button>
+        <button id="btn-redo" data-cmd="redo" data-icon="redo" title="Redo (⇧⌘Z)"></button>
+      </div>
+      <div class="label">HISTORY</div>
+    </div>
+
+    <!-- SELECT -->
+    <div class="group">
+      <div class="box selectbox">
+        <div class="splitbtn">
+          <button id="tool-select" class="big" data-tool="select" data-icon="select" title="Select (S)"></button>
+          <button id="select-menu" class="caret" data-icon="chev" title="Selection options"></button>
+        </div>
+        <div class="sublabel">SELECT</div>
+      </div>
+      <div class="label">&nbsp;</div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="group">
+      <div class="box cols4">
+        <button data-tool="pencil" data-icon="pencil" title="Pencil (P)"></button>
+        <button data-tool="brush" data-icon="brush" class="hascaret" title="Brushes (B) — click again for brush types"><i class="mini" data-icon="chev"></i></button>
+        <button data-tool="eraser" data-icon="eraser" title="Eraser (E) — paints with color R"></button>
+        <button data-tool="fill" data-icon="bucket" title="Fill with color (G)"></button>
+        <button data-tool="picker" data-icon="picker" title="Color picker (I)"></button>
+        <button data-tool="text" data-icon="text" title="Text (T)"></button>
+        <button data-tool="spray" data-icon="drop" title="Airbrush (A)"></button>
+        <button id="btn-grid" data-cmd="grid" data-icon="grid" title="Gridlines (⌘G)"></button>
+      </div>
+      <div class="label">TOOLS</div>
+    </div>
+
+    <!-- SHAPES -->
+    <div class="group">
+      <div class="shapes-row">
+        <div class="box shapesbox">
+          <div id="shapes" class="shapes-scroll"></div>
+          <div class="fakescroll"><div id="fakethumb"></div></div>
+        </div>
+        <button id="btn-fill" class="fillbtn" title="Shape fill: outline / fill / both"><span data-icon="fillOutline" id="fill-icon"></span><span class="tiny">Fill</span></button>
+      </div>
+      <div class="label">SHAPES</div>
+    </div>
+
+    <!-- TRANSFORM -->
+    <div class="group">
+      <div class="box cols5">
+        <button data-cmd="rotL" data-icon="rotL" title="Rotate left 90°"></button>
+        <button data-cmd="rotR" data-icon="rotR" title="Rotate right 90°"></button>
+        <button id="btn-crop" data-cmd="crop" data-icon="crop" title="Crop to selection (⇧⌘X)"></button>
+        <button data-cmd="resize" data-icon="resize" title="Resize and skew (⌘E)"></button>
+        <button data-cmd="invert" data-icon="invert" title="Invert colors (⇧⌘I)"></button>
+        <button data-cmd="flipH" data-icon="flipH" title="Flip horizontal"></button>
+        <button data-cmd="flipV" data-icon="flipV" title="Flip vertical"></button>
+        <button data-cmd="rot180" data-icon="rot180" title="Rotate 180°"></button>
+        <button id="btn-blur" data-cmd="blur" data-icon="drop" title="Blur selection"></button>
+        <button id="btn-pixelate" data-cmd="pixelate" data-icon="pixelate" title="Pixelate selection"></button>
+      </div>
+      <div class="label">TRANSFORM</div>
+    </div>
+
+    <!-- SIZE -->
+    <div class="group">
+      <div class="sizebox" id="sizebox">
+        <input type="range" id="size" min="1" max="100" value="13">
+        <div class="pill" id="size-val">13px</div>
+        <div class="strength-label" id="strength-val">Strength 100%</div>
+        <input type="range" id="strength" min="1" max="100" value="100">
+      </div>
+      <div class="label">SIZE</div>
+    </div>
+
+    <!-- COLOR -->
+    <div class="group">
+      <div class="colorbox">
+        <div class="cslot"><span>L:</span><button id="swatch-L" class="swatch" title="Color L (left click) — click to edit"></button></div>
+        <button id="btn-swap" class="swap" data-icon="swap" title="Swap colors (X)"></button>
+        <div class="cslot"><span>R:</span><button id="swatch-R" class="swatch" title="Color R (right click) — click to edit"></button></div>
+      </div>
+      <div class="label">COLOR</div>
+    </div>
+
+    <!-- PALETTE -->
+    <div class="group">
+      <div class="box palettebox"><div id="palette"></div></div>
+      <div class="label">PALETTE</div>
+    </div>
+  </div>
+
+  <div id="ribbon-right">
+    <button id="btn-settings" data-icon="gear" title="Settings"></button>
+    <button id="btn-layers" data-icon="layers" title="Layers (⌘L)"></button>
+  </div>
+</div>
+
+<div id="workspace">
+  <div id="scroller">
+    <div id="stage">
+      <div id="layers"></div>
+      <canvas id="float"></canvas>
+      <div id="gridlines"></div>
+      <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="textbox"><textarea id="textarea" spellcheck="false"></textarea></div>
+      <div id="handles"></div>
+      <div id="brushcursor"></div>
+      <div id="ghost"></div>
+      <div class="ch" data-h="c-nw"></div><div class="ch pill-h" data-h="c-n"></div><div class="ch" data-h="c-ne"></div>
+      <div class="ch pill-v" data-h="c-w"></div><div class="ch pill-v" data-h="c-e"></div>
+      <div class="ch" data-h="c-sw"></div><div class="ch pill-h" data-h="c-s"></div><div class="ch" data-h="c-se"></div>
+    </div>
+  </div>
+  <div id="texttools">
+    <select id="font-family">
+      <option>Arial</option><option>Helvetica</option><option>Times New Roman</option><option>Georgia</option>
+      <option>Courier New</option><option>Verdana</option><option>Trebuchet MS</option><option>Comic Sans MS</option>
+      <option>Impact</option><option>Menlo</option><option value="-apple-system">System</option>
+    </select>
+    <input id="font-size" type="number" min="4" max="400" value="24" title="Font size">
+    <button id="tt-bold" title="Bold"><b>B</b></button>
+    <button id="tt-italic" title="Italic"><i>I</i></button>
+    <button id="tt-underline" title="Underline"><u>U</u></button>
+    <button id="tt-opaque" title="Opaque background (color R)">▣</button>
+  </div>
+</div>
+
+<div id="layerpanel" class="panel hidden">
+  <div class="panel-head"><span>Layers</span><button class="xbtn" data-close="layerpanel">✕</button></div>
+  <div id="layerlist"></div>
+  <div class="layer-opacity"><span>Opacity</span><input type="range" id="layer-opacity" min="0" max="100" value="100"><span id="layer-opacity-val">100%</span></div>
+  <div class="layer-actions">
+    <button data-cmd="layerAdd" title="New layer">＋</button>
+    <button data-cmd="layerDup" title="Duplicate layer">⧉</button>
+    <button data-cmd="layerUp" title="Move up">↑</button>
+    <button data-cmd="layerDown" title="Move down">↓</button>
+    <button data-cmd="layerMerge" title="Merge down">⤓</button>
+    <button data-cmd="layerDelete" title="Delete layer">🗑</button>
+  </div>
+</div>
+
+<div id="settingspanel" class="panel hidden">
+  <div class="panel-head"><span>Settings</span><button class="xbtn" data-close="settingspanel">✕</button></div>
+  <label class="row"><input type="checkbox" id="set-aa"> Antialiasing (brush &amp; shapes)</label>
+  <label class="row"><input type="checkbox" id="set-grid"> Show gridlines</label>
+  <label class="row"><input type="checkbox" id="set-transparent"> Transparent background for new images</label>
+  <div class="row">New image size
+    <input type="number" id="set-w" min="1" max="10000" class="num"> ×
+    <input type="number" id="set-h" min="1" max="10000" class="num"> px</div>
+  <div class="row hint">Shortcuts: P pencil · B brush · E eraser · G fill · I picker · T text · A airbrush · S select · L line · R rectangle · O ellipse · X swap colors · [ ] size · ⌘± zoom · Delete removes selection · right click = color R</div>
+</div>
+
+<div id="statusbar">
+  <div class="st" id="st-pos">X: –, Y: –</div>
+  <div class="st" id="st-sel">Selection: None</div>
+  <div class="st" id="st-size">640 × 480 px</div>
+  <div class="spacer"></div>
+  <span class="zicon" data-icon="zoom"></span>
+  <input type="range" id="zoom-slider" min="0" max="1000" value="400">
+  <div class="zoombox"><input id="zoom-input" value="100%"><button id="zoom-menu" data-icon="caretDown"></button></div>
+</div>
+
+<div id="menu" class="menu hidden"></div>
+<div id="colorpop" class="panel hidden"></div>
+<div id="modal-wrap" class="hidden"><div id="modal"></div></div>
+<div id="toast"></div>
+<input type="file" id="file-input" accept="image/*" hidden>
+
+<script src="app.js"></script>
+</body>
+</html>
