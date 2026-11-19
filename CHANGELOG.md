@@ -3,6 +3,12 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- New images now fill the window by default instead of a small 640 × 480 sheet. A fixed size can still be set in Settings.
+- `build.sh --install` installs the app into /Applications so Spotlight finds it.
+
 ## [1.0.0] - 2026-11-19
 
 ### Added

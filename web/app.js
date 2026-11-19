@@ -131,7 +131,7 @@ function shapeD(type, x, y, w, h) {
 
 // ============================================================ state
 function loadJSON(k) { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } }
-const settings = Object.assign({ aa: true, grid: false, transparent: false, w: 640, h: 480, custom: [] }, loadJSON('paint.settings'));
+const settings = Object.assign({ aa: true, grid: false, transparent: false, autoSize: true, w: 1280, h: 720, custom: [] }, loadJSON('paint.settings'));
 function saveSettings() { try { localStorage.setItem('paint.settings', JSON.stringify(settings)); } catch (e) { /* ignore */ } }
 
 const TOOL_DEFAULTS = {
@@ -872,6 +872,14 @@ document.addEventListener('gesturechange', (e) => { e.preventDefault(); setZoom(
 textarea.addEventListener('input', growText);
 
 // ============================================================ document ops
+/** Size for a new image: fills the visible workspace (like Paint on a big screen) unless a fixed size is set. */
+function defaultSize() {
+  if (!settings.autoSize) return [settings.w, settings.h];
+  const aw = ws.clientWidth, ah = ws.clientHeight;
+  if (aw < 300 || ah < 200) return [1280, 720];
+  const w = Math.floor((aw - 140) / 10) * 10, h = Math.floor((ah - 130) / 10) * 10;
+  return [clamp(w, 400, 3840), clamp(h, 300, 2160)];
+}
 function newDoc(w, h, keepBlank) {
   discardPending();
   S.w = w; S.h = h; layerCount = 0;
@@ -879,7 +887,7 @@ function newDoc(w, h, keepBlank) {
   S.active = 0; S.undo = []; S.redo = []; S.fileName = 'Untitled'; S.filePath = null;
   afterDocChange(); setDirty(false);
   S.zoom = 1; applyZoom();
-  requestAnimationFrame(() => { if (ws.clientWidth > 200 && (S.w > ws.clientWidth - 140 || S.h > ws.clientHeight - 140)) fitZoom(); });
+  requestAnimationFrame(() => { if (ws.clientWidth > 200 && (S.w > ws.clientWidth - 120 || S.h > ws.clientHeight - 120)) fitZoom(); });
 }
 function resizeCanvas(nw, nh, ox, oy) {
   pushHistory();
@@ -1254,7 +1262,7 @@ function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.ad
 
 // ============================================================ commands
 const commands = {
-  new: () => confirmDiscard(() => newDoc(settings.w, settings.h)),
+  new: () => confirmDiscard(() => newDoc(...defaultSize())),
   open: openFile, save: () => save(false), saveAs: () => save(true), print, clear: clearCmd,
   undo, redo, copy, cut, paste, selectAll, delete: deleteSelection,
   crop, resize: resizeDialog, invert,
@@ -1343,12 +1351,15 @@ $('#btn-settings').addEventListener('click', () => $('#settingspanel').classList
 $('#btn-layers').addEventListener('click', () => command('layers'));
 $$('[data-close]').forEach((b) => b.addEventListener('click', () => { $('#' + b.dataset.close).classList.add('hidden'); $('#btn-layers').classList.toggle('on', !$('#layerpanel').classList.contains('hidden')); }));
 $('#set-aa').checked = settings.aa; $('#set-grid').checked = settings.grid; $('#set-transparent').checked = settings.transparent;
-$('#set-w').value = settings.w; $('#set-h').value = settings.h;
+$('#set-w').value = settings.w; $('#set-h').value = settings.h; $('#set-auto').checked = settings.autoSize;
+const syncSizeInputs = () => { $('#set-w').disabled = $('#set-h').disabled = settings.autoSize; };
+syncSizeInputs();
+$('#set-auto').addEventListener('change', (e) => { settings.autoSize = e.target.checked; saveSettings(); syncSizeInputs(); });
 $('#set-aa').addEventListener('change', (e) => { settings.aa = e.target.checked; saveSettings(); if (S.shapeP) renderShape(); });
 $('#set-grid').addEventListener('change', (e) => { settings.grid = e.target.checked; saveSettings(); updateGrid(); updateUI(); });
 $('#set-transparent').addEventListener('change', (e) => { settings.transparent = e.target.checked; saveSettings(); });
-$('#set-w').addEventListener('change', (e) => { settings.w = clamp(+e.target.value || 640, 1, 10000); saveSettings(); });
-$('#set-h').addEventListener('change', (e) => { settings.h = clamp(+e.target.value || 480, 1, 10000); saveSettings(); });
+$('#set-w').addEventListener('change', (e) => { settings.w = clamp(+e.target.value || 1280, 1, 10000); saveSettings(); });
+$('#set-h').addEventListener('change', (e) => { settings.h = clamp(+e.target.value || 720, 1, 10000); saveSettings(); });
 
 // ============================================================ keyboard
 document.addEventListener('keydown', (e) => {
@@ -1420,7 +1431,7 @@ window.paint = {
 
 // ============================================================ init
 paintIcons(); buildShapes(); renderPalette(); renderSwatches();
-newDoc(settings.w, settings.h);
+newDoc(...defaultSize());
 updateUI();
 ws.tabIndex = -1;
 native('ready');

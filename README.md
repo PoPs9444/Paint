@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="docs/images/icon.png" width="128" height="128" alt="Paint icon">
+<img src="docs/images/icon.png" width="128" height="128" alt="Paint for macOS icon">
 
-# Paint
+# Paint for macOS
 
-**The classic paint app, reimagined for macOS.**<br>
+**The classic Windows Paint experience, rebuilt as a native Mac app.**<br>
 Simple, fast and fun to use: everything you loved about classic Paint, with a modern native Mac look.
 
 [![Release](https://img.shields.io/github/v/release/PoPs9444/Paint?style=flat-square&color=1f7cf5)](https://github.com/PoPs9444/Paint/releases/latest)
@@ -18,17 +18,18 @@ Simple, fast and fun to use: everything you loved about classic Paint, with a mo
 
 <br>
 
-<img src="docs/images/hero.png" alt="Paint running on macOS" width="100%">
+<img src="docs/images/hero.png" alt="Paint for macOS running on a Mac" width="100%">
 
 </div>
 
 ---
 
-## Why Paint?
+## Why Paint for macOS?
 
-Most drawing apps on the Mac are either too basic or too complicated. **Paint** sits right in the middle. You can open it and start drawing straight away, and it still has the features you need for real work: shapes you can edit after drawing them, selections, layers and a full undo history.
+Most drawing apps on the Mac are either too basic or too complicated. **Paint for macOS** sits right in the middle: it brings the simple, familiar Paint workflow from Windows to the Mac. You can open it and start drawing straight away, and it still has the features you need for real work: shapes you can edit after drawing them, selections, layers and a full undo history.
 
 - **Instant:** launches in a blink, a tiny download, no account, no subscription.
+- **Big canvas:** new images automatically fill your window (or use a fixed size of your choice).
 - **Familiar:** the ribbon layout, tools and gestures you already know from classic Paint.
 - **Native:** translucent macOS window, Retina-sharp canvas, system clipboard, Finder "Open With", trackpad pinch-to-zoom.
 - **Private:** works 100% offline. Your images never leave your Mac.
