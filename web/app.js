@@ -135,7 +135,7 @@ const settings = Object.assign({ aa: true, grid: false, transparent: false, auto
 function saveSettings() { try { localStorage.setItem('paint.settings', JSON.stringify(settings)); } catch (e) { /* ignore */ } }
 
 const TOOL_DEFAULTS = {
-  pencil: { size: 1, strength: 100 }, brush: { size: 13, strength: 100 }, eraser: { size: 16, strength: 100 },
+  pencil: { size: 1, strength: 100 }, brush: { size: 5, strength: 100 }, eraser: { size: 16, strength: 100 },
   spray: { size: 30, strength: 40 }, shape: { size: 3, strength: 100 }, text: { size: 24, strength: 100 }, fill: { size: 1, strength: 12 },
 };
 const USES_SIZE = new Set(['pencil', 'brush', 'eraser', 'spray', 'shape', 'text']);

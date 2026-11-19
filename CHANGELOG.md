@@ -6,7 +6,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 ## [Unreleased]
 
 ### Changed
-- The brush is now the default tool at launch, so you can start drawing immediately.
+- The brush (5 px) is now the default tool at launch, so you can start drawing immediately.
 - New images now fill the window by default instead of a small 640 × 480 sheet. A fixed size can still be set in Settings.
 - `build.sh --install` installs the app into /Applications so Spotlight finds it.
 
